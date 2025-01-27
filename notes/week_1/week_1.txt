@@ -1,0 +1,99 @@
+# 1/27/2025
+Python: dynamic typing, no specifying data type
+C: static typing, data type must be specified.
+
+Dynamic typing: type checking at runtime
+Static typing: type checking at compile time
+* Get error report before running code
+* Dynamic typing is harder to test for errors because we have to run that code to get an error report
+
+C types
+* int: integer
+* char: single byte
+    * Stores an ASCII code
+    * 8-bit int
+* float: floating point numbers
+
+Constants of basic types:
+* char: "a", "b"
+* integer: 200, -34
+    * Hex: 0-9 and A-F, 16 total chars, so 4 bits, 32 bit int = 8 Hex chars, 0xFFFFFFFF
+    * Octal: 07112
+* float: 3.14, 1.3E20
+
+Variables
+* Variable declaration specifies type and name: `int i`
+* Valid names are letters and digits and _, can't start w/ digits
+* Multiple delcaration: `int i, j, k = 1;`
+* Variable definition: initializing variable at declaration time `int i = 1` or initialized separately.
+
+Operators
+* Arith: +, -, *, %
+* Bitwise: &, |, ~, ^, <<, >>
+* Logical: &&, ||, !
+* Pre/post increment/decrememt
+    * i++, ++i, i--, --i
+    * c = i++, assigns c, then increments i, so c = i-1
+    * c = ++i, increments i, then assigns c, so c = i
+
+Precendence and associativity:
+* Good practice: parens
+
+Assignment
+* LHS (left hand side) = expression
+* var op= expr --> var = var op expr: a += c --> a = a + c
+* Assignments are not statements, they are expressions, and = is an operator that returns the evaluated RHS: a = b = c = 10 --> a = (b = (c = 10)), all will = 10
+* Good practice: don't do weird shit
+
+Yoda
+* if (2 == x) better than if (x == 2) b/c you can typo if (x = 2)
+
+Integer data types:
+* char
+* short int: short
+* int
+* long int: long
+* long long int: long long
+* signed and unsigned
+* Size depends on architecture (following for x84_64, 64-bit architecture)
+    * char: 8 bits
+    * short: 16 bits
+    * int: 32 bits
+    * long: 64 bits
+    * long long: 64 bits
+
+Determining sizes: sizeof(T) gives # bytes for type or variable
+    * sizeof(int), sizeof(i)
+
+Checking equality: (int h1 = 72) == (char h2 = 'H')
+
+ASCII:
+* [0,127]
+* [0,31] control chars (non-printable)
+* [48,57] digits
+* [65,90] uppercase letters
+* [97,122] lowercase letters
+
+Char to int: char ch='8'; int x = ch - '0';
+
+Printing format: %d for decimal, %o for octal
+
+Automatic type conversion:
+* lower rank converted into higher rank
+* rankings: char < short < int < long < long long < float < double < long double
+* widening: double d = 1;
+* narrowing: int i = 2.5;
+
+Type casting: (double) x
+
+Booleans:
+* K&R and C89/C90 does not have bool
+* 0 = false and 1 = true
+* #define TRUE 1, #define FALSE 0, #define BOOL char
+* C99 has _Bool
+
+Integers of specific sizes (C99): int32_t, uint32_t
+
+String is not a basic type, it is an array of chars
+* "Hello \n" -> [....'\0'], null-terminated array
+
