@@ -97,3 +97,23 @@ Integers of specific sizes (C99): int32_t, uint32_t
 String is not a basic type, it is an array of chars
 * "Hello \n" -> [....'\0'], null-terminated array
 
+Control flow
+* Block: statements enclosed by {}, scope of variables is the block
+* if and else
+    * Comparisons: ==, !=, >, <, >=, <=
+    * Logical operators: ||, &&, !
+    * 1 is true and 0 is false
+* Ternary operator: expr ? true_expr : false_expr
+* while (expr) {statement}
+* do {statement} while (condition)
+* for (start exp; condition exp; do exp) {statement}
+* comma operator: exp1, exp2 evalulates exp1 then exp2
+* switch: switch (int expr) {case (int constant): {statements}}
+    * cases fall through, so remember to break
+
+Common mistakes
+* x = 8 (assign), x == 8 (equality)
+* x && y (logical), x & y (bitwise)
+* forgetting break in switch
+* off-by-one indexing
+
