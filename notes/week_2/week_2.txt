@@ -1,0 +1,31 @@
+Function: input -> function -> output
+* Specified what the computation does
+* Abstracts away how it is done
+
+Declaration and definition
+* Funcs must be declared before use, can be defined at the same time or later
+* Func declarations/prototypes specify call
+
+Macros
+* #define MIN(x,y) (x<y ? x : y)
+
+Types of variables
+* Local: only visible inside function, value not retained across function calls
+* Static local: only visible inside function, value retained
+
+* Global: declared outside functions, value retained for entire program
+* Static global: declared outside functions, value retained for entire program, only visible in same file
+
+Function call context
+* Copies of function arguments (call by value)
+* Local variables
+* Return address
+* Managed by execution stack: stack frame created for function call, destroyed when function ends
+
+Memory organization
+* Every process has address space
+* Executable code at bottom
+* Static and global vars above
+* Stack at the top, grows down: function calls, params, local vars, stack frames
+* Heap at the bottom, grows up
+
