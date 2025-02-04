@@ -6,6 +6,18 @@ int main() {
 	scanf("%d", &n);
 
 	int m = n;
+    int x;
+    int ones;
+    while ((n != 4) && (n != 1)) {
+        x = 0;
+        while (n != 0) {
+            ones = n % 10;
+            x += ones * ones;
+            n /= 10;
+        }
+        n = x;
+        printf("%d\n", n);
+    }
 
 	if (n == 1) {
 		printf("%d is a happy number.\n", m);
