@@ -29,3 +29,23 @@ Memory organization
 * Stack at the top, grows down: function calls, params, local vars, stack frames
 * Heap at the bottom, grows up
 
+Arrays
+* Contiguous collection of the same type
+* Array lengths must be function arguments, or other known values
+* No array assignment, cannot assign a whole array at once to another array
+* String is a char array ending with 0, null char '\0'
+
+Arrays and functions
+* Everything in c is passed by value, except for arrays, passed as reference (pointers)
+* Functions cannot return arrays
+
+Pass by value
+* Copies function parameters and passes to function
+* Assignment within function does not change outside variable, since you are mutating a copy
+* Function call creates stack frame with its own memory, copy of variable
+
+Pass by reference
+* Passes reference to variable (pointer, address to variable)
+* Mutating object the reference points to will change the variable outside the function
+* Arrays are not primitive datatypes. Arrays are not passed by value, they are passed by reference (pointer)
+
