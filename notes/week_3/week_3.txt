@@ -1,0 +1,20 @@
+Pointers and memory
+* Value of the variable, and where the variable is sorted in memory
+* Pointer is the address in memory
+* Address is an unsigned int
+* Operators: & (reference, address of), * (dereference, get the value at the address)
+
+Pointers and arrays
+* Input to func can be array
+* Output array from func as pointer to start of array
+
+Stack grows top to bottom, heap grows bottom to top.
+* Code at bottom of heap 
+* Globals and statics are stored in data segment (heap)
+* Locals are stored in stack frames
+* Stack frame destroyed when function done
+
+Must make array static if created within function and you try to use outside, otherwise seg fault (you no longer own that memory).
+
+arr[i] is the same as arr + i
+
