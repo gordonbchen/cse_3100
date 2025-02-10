@@ -8,9 +8,10 @@ Pointers and arrays
 * Input to func can be array
 * Output array from func as pointer to start of array
 
-Stack grows top to bottom, heap grows bottom to top.
-* Code at bottom of heap 
-* Globals and statics are stored in data segment (heap)
+Memory
+* Code at bottom
+* Globals and statics are stored in data segment
+* Stack grows top to bottom, heap grows bottom to top.
 * Locals are stored in stack frames
 * Stack frame destroyed when function done
 
