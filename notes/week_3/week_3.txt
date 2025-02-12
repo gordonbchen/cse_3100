@@ -7,6 +7,8 @@ Pointers and memory
 Pointers and arrays
 * Input to func can be array
 * Output array from func as pointer to start of array
+* Must make array static if created within function and you try to use outside, otherwise seg fault (you no longer own that memory).
+* arr[i] is the same as arr + i
 
 Memory
 * Code at bottom
@@ -15,7 +17,37 @@ Memory
 * Locals are stored in stack frames
 * Stack frame destroyed when function done
 
-Must make array static if created within function and you try to use outside, otherwise seg fault (you no longer own that memory).
+Memory overview
+* Ever process has its own memory
+* Code segment, static/global (data), heap (growing up), stack (growing down)
+* Function call creates new stack frame with params and local variables, return destroys stack frame
+* OS reclaims everything when program terminates
+* Heap memory must be manually allocated then freed (otherwise memory leak and crash)
 
-arr[i] is the same as arr + i
+Heap
+* Array size must be known at compile time
+* Dynamic allocation (memory allocation at runtime) on heap
+* void* malloc(size_t, size);
+    * allocated size bytes on stack
+    * return generic pointer, should be cast into correct pointer (automatically cast into pointer of correct type when assigning)
+    * returns NULL if alloc fails
+    * memory is uninitialized
+* Array size: sizeof(x) / sizeof(x[0]), doesn't work for pointers since pointers point to first element of array, use variable to track size
+* void* calloc(size_t n_elements, size_t size);
+    * Initializes to 0 automatically
+* void* realloc(void* ptr, size_t size);
+    * Reallocate memory with new size
+    * Allocs are contiguous memory, will try to claim memory immediately after, otherwise makes a copy
+    * Return pointer can be different.
+* void free(void *ptr);
+    * No need to give length because system has metadata before contiguous chunk.
+    * Do not double free
+    * After free, set to NULL
+* Rules:
+    * Everything you alloc must be freed
+    * Only free things you malloc, calloc, realloc
+* Multidimensional array
+    * malloc an array of pointers pointing to a row
+
+64-bit machine means 64 bits in address
 
