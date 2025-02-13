@@ -37,7 +37,7 @@ double squared_dist(t_point *p1, t_point *p2)
 //function that returns the pointer to the pair of points that has the shortest distance
 t_pair *shortest_dist_pair(int n, t_point points[])
 {
-	int i, j;
+    int i, j;
 	double d;
 	t_pair *p_pair;
 	p_pair = malloc(sizeof(t_pair));
@@ -51,14 +51,16 @@ t_pair *shortest_dist_pair(int n, t_point points[])
 	p_pair -> p1 = points[0];
 	p_pair -> p2 = points[1];
 	// TODO fill in the code
-
-
-
-
-
-
-
-
+    for (i = 0; i < n; ++i) {
+        for (j = i+1; j < n; ++j) {
+            d = squared_dist(&(points[i]), &(points[j]));
+            if (d < min_d) {
+                min_d = d;
+                p_pair -> p1 = points[i];
+                p_pair -> p2 = points[j];
+            }
+        }
+    }
     return p_pair;
 }
 //Do not change the following code
