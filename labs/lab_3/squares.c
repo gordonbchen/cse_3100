@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 /* This program should print the sum of the elements
  *     1^2, 2^2, 3^2, ..., n^2
@@ -9,9 +10,10 @@
 /* Computes the sum of the first n elements in the array. */
 int sum(int n, int* arr)
 {
-    int i, sum;
-    for(i = 0; i <= n; i++)
+    int sum = 0;
+    for(int i = 0; i < n; i++)
         sum += arr[i];
+    return sum;
 }
 
 /* Fills the given array with the values
@@ -19,7 +21,7 @@ int sum(int n, int* arr)
 void fillSquares(int n, int* arr)
 {
     int i;
-    for(i = 1; i <= n; i++)
+    for(i = 0; i < n; i++)
         arr[i] = i*i;
 }
 
@@ -45,10 +47,11 @@ int main(int argc, char* argv[])
         printf("n must be positive.");
         return 1;
     }
-    arr = (int*) malloc(n);
+    arr = (int*) malloc(n * sizeof(int));
 
     fillSquares(n, arr);
     total = sum(n, arr);
     printf("total: %d\n", total);
+    free(arr);
     return 0;
 }
