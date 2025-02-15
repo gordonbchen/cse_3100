@@ -29,8 +29,14 @@ typedef struct Property
 //Otherwise, return 0
 int transaction(TPlayer *p1, TPlayer *p2, int amount)
 {
-
-
+    if (p1->balance >= amount) {
+        p1->balance -= amount;
+        p2->balance += amount;
+        return 1;
+    }
+    p2->balance += p1->balance;
+    p1->balance = 0;
+    return 0;
 }
 
 //TODO
@@ -44,12 +50,20 @@ int one_round(int m, int n, TPlayer p[], TProperty prop[])
 	{
 		int steps = rand() % 6 + 1 + rand() % 6 + 1;
 		//fill in the code below
+        p[i].loc += steps;
+        if (p[i].loc >= n) {
+            p[i].loc -= n;
+            p[i].balance += n;
+        }
 
-
-
-
-
-
+        if (prop[p[i].loc].owner_id == -1) {
+            prop[p[i].loc].owner_id = p[i].id;
+        }
+        else if (prop[p[i].loc].owner_id != p[i].id) {
+            if (transaction(&p[i], &p[prop[p[i].loc].owner_id], prop[p[i].loc].rent) == 0) {
+                return 0;
+            }
+        }
 	}
 	return 1;
 }
