@@ -1,0 +1,47 @@
+malloc: must keep track of size manually
+fixed size (array)
+* if in method where it wa created: use sizeof(a) / sizeof(a[0])
+* else: you have a pointer to the first element, must manually keep track of size
+
+int x[3]  vs  int *x = malloc(sizeof(int) * 3)
+* malloc pros
+    * creating arrays allocates memory on the stack. stack is fixed size, heap is not fixed and is much larger, can run out of stack space
+    * cannot use non-static stack variables outside of funciton call (because stack frame gets destroyed), must use heap (explicitly freed by us)
+* stack array pros: stack memory is accessed faster
+
+value of a pointer is a byte address
+* unsigned int that numbers bytes in memory
+* 64 bits for 64-bit architectures
+* pointer arithmetic to compute other addresses
+* adding 1 to pointer moves the pointer by sizeof(type)
+* p[1] is the same as *(p+1)
+
+pointer subtraction (must have same type): # elements between pointers, not # bytes
+
+pointer comparisons (<, >, <=, >=, !=, ==)
+* Check memory bounds
+* Compares pointers as unsigned ints
+
+Casting
+* if you don't want type scaling, cast to (char*) since char is 1 byte
+
+Arrays and pointer similar: int a[10]  and  int* p = a
+* value of a[0]: p[0], *p, a[0], *a
+* address of a[0]: p, &p[0], a, &a[0]
+Array decay: array of int a decays into pointer to int
+
+Arrays and pointers differences
+* sizeof pointer will give sizeof unsigned long, sizeof array will give sizeof array
+* cannot increment array
+
+Struct: new type, aggregates related variables
+typedef: no longer have to use "struct [struct_name]", instead use "typename"
+* assignment copies all struct members
+* structs are passed by value, copied (use pointers to structs)
+
+Alignment: data stored at integer multiples of size (for improved memory access perf)
+* char (1 byte alginment), int (4), long (8), float (4), double (8)
+* structs are padded to maintain alignment
+* sizeof struct is sizeof members + padding, rounded up to largest alignment
+* order struct members largest to smallest to minimize padding
+
