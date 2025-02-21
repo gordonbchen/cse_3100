@@ -106,9 +106,24 @@ void print_list_details(node *head) {
 // functions that have not been implemented
 
 node *delete_node(node *head, int v) {
-  // TODO
-  error_message(ERR_NODELETE);
-  return head;
+    node* prev = NULL;
+    node* curr = head;
+    while (curr != NULL) {
+        if (curr->v == v) {
+            if (prev == NULL) {
+                head = curr->next;
+            }
+            else {
+                prev->next = curr->next;
+            }
+            free(curr);
+            return head;
+        }
+        prev = curr;
+        curr = curr->next;
+    }
+    error_message(ERR_NOTFOUND);
+    return head;
 }
 
 /*
@@ -119,8 +134,14 @@ node *delete_node(node *head, int v) {
  * Return value is a pointer to the new head node.
  */
 node *reverse_list(node *head) {
-  // TODO
-  error_message(ERR_NOREVERSE);
-  return head;
+    node* prev = NULL;
+    node* next = NULL;
+    while (head != NULL) {
+        next = head->next;
+        head->next = prev;
+        prev = head;
+        head = next;
+    }
+    return prev;
 
 }
