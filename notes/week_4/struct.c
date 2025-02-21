@@ -15,6 +15,15 @@ typedef struct Person {
     char gender;
 } TPerson;
 
+void birthday(TPerson* p) {
+    ++(p->age);
+}
+
+void print_person(TPerson* p) {
+    printf("%s, %d, %c\n", p->name, p->age, p->gender);
+}
+
+
 int main() {
     struct coord c1;
     c1.x = 1;
@@ -36,6 +45,8 @@ int main() {
     }
 
     TPerson me = {"Gordon", 18, 'm'};
-    printf("%s, %d, %c\n", me.name, me.age, me.gender);
+    print_person(&me);
+    birthday(&me);
+    print_person(&me);
 }
 

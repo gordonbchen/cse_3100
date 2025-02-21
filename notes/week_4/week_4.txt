@@ -45,3 +45,20 @@ Alignment: data stored at integer multiples of size (for improved memory access 
 * sizeof struct is sizeof members + padding, rounded up to largest alignment
 * order struct members largest to smallest to minimize padding
 
+Linked list (singly)
+* Node: value and pointer to next (NULL to terminate)
+
+Array: fixed size, expensive resizing, memory allocated in advance, fast sequential access
+Linked list: dynamic size, memory allocated dynamically, slow sequential access (not contiguous in memory)
+
+Enum: treated as ints, starts at 0. Syntactic sugar.
+
+const: unchanging. pointer to const, const pointer, const pointer to const.
+
+function pointer:
+- int func(); function returning int
+- int* func(); function returning int pointer
+- int (*func)(); pointer to func returning int, () after (*func) means function pointer
+- int* (*func)(); pointer to func returning int pointer
+
+qsort: takes in function pointer to compare
