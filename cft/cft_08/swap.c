@@ -28,7 +28,11 @@ typedef struct node_tag
 // implement a function to swap two (int *)
 // add two paramters of correct types 
 // the function does not return a value
-// void    swap_pointer_int();
+void swap_pointer_int(int** a, int** b) {
+    int* c = *a;
+    *a = *b;
+    *b = c;
+}
 
 void test_swap_pointer_int(int argc, char *argv[])
 {
@@ -49,6 +53,7 @@ void test_swap_pointer_int(int argc, char *argv[])
 
     // TODO 
     // one line to call swap_point_int() to swap pa and pb
+    swap_pointer_int(&pa, &pb);
 
     printf("After swap\n");
     // printf(" pa is %p,  pb is %p\n",  pa,  pb);
@@ -59,7 +64,11 @@ void test_swap_pointer_int(int argc, char *argv[])
 // implement a function to swap two structures of type person_t
 // add two paramters of correct types 
 // the function does not return a value
-// void    swap_person();
+void swap_person(person_t* a, person_t* b) {
+    person_t c = *a;
+    *a = *b;
+    *b = c;
+}
 
 void test_swap_person(int argc, char *argv[])
 {
@@ -82,6 +91,7 @@ void test_swap_person(int argc, char *argv[])
 
     // TODO 
     // one line to call swap_person() to swap x and y
+    swap_person(&x, &y);
     
     printf("After swap\n");
     printf("x's id is %d, x's name is %s\n", x.id, x.name);
