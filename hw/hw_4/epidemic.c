@@ -116,6 +116,16 @@ int summary(THost hosts[], int m)
 	return I_n > 0;
 }
 
+int wrap(int x, int k) {
+    if (x > k) {
+        return x - (2*k+1);
+    }
+    else if (x < -k) {
+        return x + (2*k+1);
+    }
+    return x;
+}
+
 // one_round 
 int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
 {
@@ -157,10 +167,10 @@ int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
 		//TODO: update locations for all hosts
 		switch(r)
 		{
-			case 0: ++hosts[i].y;
-			case 1: ++hosts[i].x;
-			case 2: --hosts[i].y;
-			case 3: --hosts[i].x;
+			case 0: hosts[i].y = wrap(hosts[i].y + 1, k); break;
+			case 1: hosts[i].x = wrap(hosts[i].x + 1, k); break;
+			case 2: hosts[i].y = wrap(hosts[i].y - 1, k); break;
+			case 3: hosts[i].x = wrap(hosts[i].x - 1, k); break;
 		}
 
 		//buid linked list for I hosts
