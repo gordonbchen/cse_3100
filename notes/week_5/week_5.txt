@@ -1,0 +1,35 @@
+Errror handling:
+* errno
+* perror
+* strerror
+
+Files and directories
+* In linux, everything is a file: screen, keyboard, monitor, sockets
+* Files organized in devices
+
+IO
+* stdio.h
+* FILE*, opaque type, system dependent
+* streams: stdin, stdout, stderr
+    * all FILE*s
+    * created when programs begins
+
+Files are just a sequential stream of bytes
+* Buffering (don't see printf output immediately), stores up bytes, then flushes
+* file beginning (0 offset), file end (file size - 1), current (position indicator)
+* modes: "r" read, "w" write, "a" append, "+" is also read/write
+
+* fgets(line, MAX_LINE_LENGTH, fp)
+* getc(FILE *stream)
+* putc(int c, FILE *stream) 
+
+* int getchar(void) is the same as fgetc(stdin)
+* int putchar(int c) is the same as fputc(c, stdout)
+
+* int fscanf(FILE *stream, const char *format, ...(ptrs)...)
+* int fprintf(FILE *stream, const char *format, ...(ptrs)...)
+
+Moving the file position indicator
+* ftell(fp), read file position indicator
+* fseek(fp, n_bytes, whence) 
+
