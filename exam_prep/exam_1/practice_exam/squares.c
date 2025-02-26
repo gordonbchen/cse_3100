@@ -11,6 +11,10 @@ void print_array(int *arr, int n){
 int absolute(int a){
 //TODO: Write code to return absolute value of a number
 // function should return absolute value of a number absolute(9)=9, absolute(-9)=9
+    if (a < 0) {
+        return -a;
+    }
+    return a;
 }
 
 void sort_squares(int *arr, int n){
@@ -21,9 +25,13 @@ void sort_squares(int *arr, int n){
     for(int i = n - 1; i >= 0; i--){
         if(absolute(arr[left]) > absolute(arr[right])){
             //fill code here
+            result[i] = arr[left]*arr[left];
+            ++left;
         }
         else{
             //fill code here
+            result[i] = arr[right]*arr[right];
+            --right;
         }
     }
     
@@ -33,6 +41,7 @@ void sort_squares(int *arr, int n){
     }
  
     //fill code here
+    free(result);
 }
 
 int main(int argc, char *argv[]) {
