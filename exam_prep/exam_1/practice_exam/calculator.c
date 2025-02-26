@@ -8,7 +8,19 @@ node* addition(node* num1, node* num2) {
     node* result = NULL;
     int carry = 0; 
     //TODO: Write code to add two numbers represented by num1 and num2
+    int sum;
+    while (num1 != NULL) {
+        sum = num1->v + carry;
+        if (num2 != NULL) {
+            sum += num2 -> v;
+            num2 = num2->next;
+        }
+        num1 = num1->next;
 
+        carry = sum / 10;
+        sum = sum % 10;
+        result = prepend(result, new_node(sum));
+    }
     return result;
 }
 
@@ -16,7 +28,21 @@ node* subtraction(node *num1,node *num2){
     node *result = NULL;
     int borrow = 0;
     //TODO: Write code to subtract num2 from num1
-    
+    int diff;
+    while (num1 != NULL) {
+        diff = num1->v - borrow;
+        if (num2 != NULL) {
+           diff -= num2->v;
+           num2 = num2->next;
+        }
+        num1 = num1->next;
+
+        borrow = (diff < 0);
+        if (borrow) {
+            diff += 10;
+        }
+        result = prepend(result, new_node(diff));
+    }
     return result;
 }
 
