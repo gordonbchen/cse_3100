@@ -3,14 +3,18 @@
 //TODO
 unsigned firstDigit(unsigned k)
 {
-	//fill in code below
-
+	while (k >= 10) {
+		k /= 10;
+	}
+	return k;
 }
 
 //TODO
 void FirstDigitCount(unsigned *a, unsigned n, unsigned freq[10])
 {
-	//fill in your code below
-
+	for (int i = 0; i < n; ++i) {
+		int first_digit = firstDigit(a[i]);
+		++freq[first_digit];
+	}
 }
 
