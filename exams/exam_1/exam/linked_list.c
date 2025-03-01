@@ -21,7 +21,7 @@ void insert(node **head, node *newnode)
 		return;
 	}
 	node *p = (*head);
-	node *q = p;
+	node *q = NULL;
 	while (p->next != NULL && newnode->v > p->v)
 	{
 		q = p;
@@ -30,6 +30,11 @@ void insert(node **head, node *newnode)
 	if (newnode->v > p->v)
 	{
 		p->next = newnode;
+		return;
+	}
+	else if (q == NULL) {
+		newnode->next = p;
+		*head = newnode;
 		return;
 	}
 	q->next = newnode;
