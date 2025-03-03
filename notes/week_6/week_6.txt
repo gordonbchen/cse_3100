@@ -1,0 +1,50 @@
+fork
+* create child process
+* return process id
+	* in parent process: child pid
+	* in child process: 0
+	* fail: -1
+* sys call (handled by OS)
+* resources copied: stack frame, heap, data segment
+
+Definitions
+* Process: instance of program being executed
+* Multiprocessing OS: multiple programs and instances of programs can be executed at once
+* Executing multiple programs:
+	* Single-core: time-sharing
+	* Multi-core: true parallelism + time-sharing
+
+Process management (OS):
+* Process table holds Process Control Block (PCB) for every process
+* PCB holds all information related to process
+* OS scheduler picks process to be executed
+* When process suspended, state saved in PCB
+
+Process creation:
+* System init
+* Shell process creates child processes to run commands
+Process termination: program exit (normal, error, seg fault, user kill)
+
+Unix commands:
+* ps: view processes
+* ps tree: process tree
+* top: memory and CPU usage
+* kill: kill process
+
+Process lifetime: birth, life, death
+
+Concurrency
+
+Clone effects:
+* memory 100% identical
+* memory changes only affects copy
+* files open in parent accessible in child, io ops change the same file
+
+Wait: waiting for child to complete
+
+Zombie process: dead process waiting to be reaped (checked by parent)
+* Cannot be killed b/c already dead
+
+Sys call: API from OS Kernel
+* more expensive than normal function calls
+
