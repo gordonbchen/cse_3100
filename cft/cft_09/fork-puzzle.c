@@ -54,6 +54,9 @@ int main(int argc, char *argv[]) {
             }
             else if(cur + a[cur] >= 0 && cur + a[cur] <n) {
                 // TODO: Add your code here
+                cur += a[cur];
+                b[moves] = cur;
+                ++moves;
             }
         }
         else {
@@ -68,6 +71,9 @@ int main(int argc, char *argv[]) {
             }
             else if(cur - a[cur] >= 0 && cur - a[cur] <n) {
                 // TODO: Add your code here
+                cur -= a[cur];
+                b[moves] = cur;
+                ++moves;
             }
         }
     }
