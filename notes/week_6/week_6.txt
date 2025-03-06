@@ -48,3 +48,28 @@ Zombie process: dead process waiting to be reaped (checked by parent)
 Sys call: API from OS Kernel
 * more expensive than normal function calls
 
+exec family of functions: overwrites code segment in process
+* no code after will be run if successful
+* code after runs if exec fails
+* loads binary into process code segment
+* process upgrade
+* doesn't affect open files
+* if successful: can't see return value
+* NULL-terminated command
+
+* execl: specific path
+* execlp: searches for binary in PATH
+* execv or execvp: # arguments unknown at compile time (like main)
+
+* last value in argv is NULL
+* "gcc" "-0" "ab" "ab.c" "NULL"
+
+* exit(0) to termiante processes with success code
+* successful execl will overwrite code segment
+
+file apis (IO)
+* f family: fopen, fclose, fread, fgetc, fscanf, fprintf
+* FILE* abstraction
+* wrapper around sys call APIs
+* open() is low level sys call
+* stdin (0), stdout (1), stderr(2) are automatically inherited from parent proces

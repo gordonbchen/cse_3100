@@ -19,6 +19,5 @@ int main() {
 	printf("\n");
 
 	pid = fork();
-	printf("\npid=%d", pid);
-	printf("\n");
+	printf("pid=%d\n", pid);
 }
