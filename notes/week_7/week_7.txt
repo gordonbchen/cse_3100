@@ -1,0 +1,50 @@
+3 files automatically opened for each process
+* 0 (file descriptor): stdin
+* 1: stdout
+* 2: stderr
+
+Redirection
+* program < filename: input from filename
+* output > filename: send output to filename
+* 2> filename: send errors to filename
+* sort < unsorted.txt > sort.txt: sorts unsorted.txt by lines, sends output to sort.txt
+
+Shell redirections
+* command < infile > outfile
+* >> outfile: append output to outfile
+* 2>: send errors to outfile
+* &>: send output and errors to outfile
+
+* open() returns file descriptor
+* every open file has file descriptor: stdin (0), stdout (1), stderr (2)
+* files opened in process remain open after fork() and exec()
+
+* every process has file descriptor table
+* inds of entries in open file table managed by OS, records mode (read, write, append), stores Inode index
+* Inode table with actual file name and disk location
+
+* #include <unistd.h>
+* int dup(int oldfd): copies oldfd to first available entry in FD table
+* int dup2(int oldfd, int newfd): copies oldfd to newfd, closes newfd if in use
+
+* after fork, child and parent FD tables point to same places
+* dup() and dup2() to point child at different files.
+
+Pipes
+* inter-process communication
+* output of one process directed to input of other process
+* pipe sys call: creates pip w/ input and output end
+* int pipe(int pipefd[2]);
+    * 0 success, -1 fail
+    * pipefd[0] is read end
+    * pipefd[1] is write end
+    * pipe is a buffer (byte stream)
+
+* exec gets FDs for pipes, knows FDs 0, 1, 2, but not pipe FDs
+* create 2 pipes for 2-way communication
+* Fork A: dup2 stdout to pipe write end, close unused read ends
+* output of A points to pipe
+* Point parent to read from pip end
+* Fork B: smae as parent init, point stdin to pipe read, close unused write end (also in parent)
+* In the end: parent is same as init, A points stdout to pipe write, B points stdin to pipe read
+* exec binaries only accepts input from stdin and outputs to stdout

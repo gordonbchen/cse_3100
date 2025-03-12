@@ -1,0 +1,5 @@
+output to dup.txt
+output to dup.txt
+After dup2
+After close
+After close
