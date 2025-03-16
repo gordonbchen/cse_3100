@@ -43,6 +43,22 @@ void read_file_to_array(char *filename)
 // Efficiency is needed to pass test cases in limited time
 int in_dict(char *word)
 {
+	int low = 0;
+	int high = word_count;
+	while (low < high) {
+		int mid = (low + high) / 2;
+		int cmp = strcmp(word, words[mid]);
+		if (cmp == 0) {
+			return 1;
+		}
+		else if (cmp < 0) {
+			high = mid;
+		}
+		else {
+			low = mid + 1;
+		}
+	}
+	return 0;
 }
 
 // TODO
@@ -52,6 +68,9 @@ int in_dict(char *word)
 // The result is in decrypted
 void decryption(unsigned char key, unsigned char shift, const int *encrypted, int len, char *decrypted)
 {
+	for (int i = 0; i < len / sizeof(int); ++i) {
+		decrypted[i] = (encrypted[i] ^ key) >> shift;
+	}
 }
 
 // TODO
@@ -59,6 +78,25 @@ void decryption(unsigned char key, unsigned char shift, const int *encrypted, in
 // the score is used to determine whether msg is the original message
 int message_score(const char *msg)
 {
+	int score = 0;
+	char word[MAX_WORD_LENGTH];
+	int word_len = 0;
+	for (int i = 0; i < MAX; ++i) {
+		if (isalpha(msg[i]) && (word_len < (MAX_WORD_LENGTH-1))) {
+			word[word_len] = msg[i];
+			++word_len;
+			continue;
+		}
+		if (word_len > 0) {
+			word[word_len] = '\0';
+			score += in_dict(word);
+			word_len = 0;
+		}
+		if (msg[i] == '\0') {
+			break;
+		}
+	}
+	return score;
 }
 
 // search using all the (key, shift) combinations
@@ -90,6 +128,14 @@ void search(const int *encrypted, int len, char *message)
 // return number of bytes read
 int read_encrypted(char *filename, int *encrypted)
 {
+	int fd = open(filename, O_RDONLY);
+	if (fd == -1) {
+		printf("Failed to open file %s\n", filename);
+		exit(1);
+	}
+	int n_bytes = read(fd, encrypted, MAX*sizeof(int));
+	close(fd);
+	return n_bytes;
 }
 
 // Do not change the main() function

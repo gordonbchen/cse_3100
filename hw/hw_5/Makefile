@@ -1,4 +1,4 @@
-TARGETS=decrypt
+TARGETS=decrypt encrypt
 CC=gcc
 CFLAGS=-Wall -g -std=c99
 
