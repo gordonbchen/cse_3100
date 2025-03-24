@@ -1,0 +1,26 @@
+Processes: separate memory spaces, copies memory, must use pipes to communicate
+
+Sort array:
+* create 2 processes to sort halves of array
+* send sorted halves back to parent through pipes
+* parent merges sorted halves
+
+Threads: run in parallel, share the same memory space (no pipes)
+* pointers are virtual addresses that are mapped to physical addresses through a per-process table
+* different processes have different tables and different physical addresses, so we can't just give a pointer to another process (it will map to a different physical address). We have to use a pipe
+* since threads are in the same process, they use the same table, so the same virtual address maps to the same physical address, so we can pass pointers.
+
+* creation: pthread_create
+* exit thread job function: pthread_exit
+* master thread wait for threads to finish: pthread_join
+
+* process has virtual address space, files, concurrent threads
+* threads are within the same process, 
+	* stack is different for every thread
+	* code, data (static, globals), heap (alloced) is the same
+
+* single-core: time-sharing
+* multi-core: true concurrency
+
+* thread job functions must take in a single void* arg and return void* or void
+
