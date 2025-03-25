@@ -38,7 +38,7 @@ void write_solution(int b[], int moves, int pd)
     }
     strcat(buffer, "\n");
     //Add one line of code to write the buffer to the pipe pd
-
+    write(pd, buffer, strlen(buffer));
 }
 
 int read_solution(int pd, char buffer[])
@@ -111,9 +111,9 @@ int main(int argc, char *argv[])
                 else if(cur + a[cur] >= 0 && cur + a[cur] <n)
                 {
                     //Add your code here
-
-
-
+                    cur += a[cur];
+                    b[moves] = cur;
+                    ++moves;
                 }
             }
             else
@@ -133,9 +133,9 @@ int main(int argc, char *argv[])
                 else if(cur - a[cur] >= 0 && cur - a[cur] <n)
                 {
                     //Add your code here
-
-
-
+                    cur -= a[cur];
+                    b[moves] = cur;
+                    ++moves;
                 }
             }
         }
