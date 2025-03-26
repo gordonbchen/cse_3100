@@ -24,3 +24,14 @@ Threads: run in parallel, share the same memory space (no pipes)
 
 * thread job functions must take in a single void* arg and return void* or void
 
+* threads
+	* share address space and data
+	* lighter than processes (less overheap)
+	* good when blocked by I/O or waiting
+
+* one thread crashing will crash whole process
+* one process crashing will not crash all processes
+
+* shared state: race conditions when mutating shared (global) memory
+* globals are put into data segment, shared by all threads
+

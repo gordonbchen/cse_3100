@@ -13,10 +13,11 @@ int compare_ints(const void* a, const void* b) {
 	return ia - ib;
 }
 
-void thread_sort(void* parr) {
+void* thread_sort(void* parr) {
 	Array* arr = (Array*) parr;
 	qsort(arr->nums, arr->len, sizeof(int), compare_ints);
 	pthread_exit(NULL);
+	return NULL;
 }
 
 void merge(Array* a, Array* b, int* out) {
@@ -71,8 +72,8 @@ int main() {
 
 	pthread_t thread_a;
 	pthread_t thread_b;
-	pthread_create(&thread_a, NULL, (void*) thread_sort, &array_a);
-	pthread_create(&thread_b, NULL, (void*) thread_sort, &array_b);
+	pthread_create(&thread_a, NULL, thread_sort, &array_a);
+	pthread_create(&thread_b, NULL, thread_sort, &array_b);
 	pthread_join(thread_a, NULL);
 	pthread_join(thread_b, NULL);
 
