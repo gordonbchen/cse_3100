@@ -119,6 +119,29 @@ void    child_main(int fdp[], int fdc[], int seed)
     //      send the result to parent
     //  send the final message back (as a string) 
     //  close all pipe file descriptors
+    close(fdc[0]);
+    close(fdp[1]);
+
+    int max = gmn_get_max();
+    // DEBUG: printf("CHILD write: max = %d\n", max);
+    write(fdc[1], &max, sizeof(max));
+
+    int guess;
+    int result = -1;
+    while (result != 0) {
+        read(fdp[0], &guess, sizeof(guess));
+        // DEBUG: printf("CHILD read: guess = %d\n", guess);
+        result = gmn_check(&gmn, guess);
+        // DEBUG: printf("CHILD write: result = %d\n", result);
+        write(fdc[1], &result, sizeof(result));
+    }
+
+    char* msg = gmn_get_message(&gmn);
+    write(fdc[1], msg, strlen(msg));
+    // DEBUG: printf("CHILD write: %s\n", gmn_get_message(&gmn));
+
+    close(fdc[1]);
+    close(fdp[0]);
 
     exit(EXIT_SUCCESS);
 }
@@ -187,7 +210,12 @@ int main(int argc, char *argv[])
     // TODO
     //      close unused pipe file descriptor
     //      get max from the child
-    
+    close(fdp[0]);
+    close(fdc[1]);
+
+    read(fdc[0], &max, sizeof(max));
+    // DEBUG: printf("PARENT read: max = %d\n", max);
+
     do { 
         guess = (min + max)/2;
         printf("My guess: %d\n", guess);
@@ -195,6 +223,10 @@ int main(int argc, char *argv[])
         // TODO
         //     send guess to the child
         //     wait for the result from the child
+        write(fdp[1], &guess, sizeof(guess));
+        // DEBUG: printf("PARENT write: guess = %d\n", guess);
+        read(fdc[0], &result, sizeof(result));
+        // DEBUG: printf("PARENT read: result = %d\n", result);
 
         if (result > 0)
             min = guess + 1;
@@ -209,6 +241,15 @@ int main(int argc, char *argv[])
     //      receive the final message and print it to stdout
     //      close all pipe file descriptors
     //wait for the child process to finish
+    char c = -1;
+    while (c != '\n') {
+        read(fdc[0], &c, sizeof(c));
+        putchar(c);
+    }
+
+    close(fdc[0]);
+    close(fdp[1]);
+
     wait(NULL);
     return 0;
 }
