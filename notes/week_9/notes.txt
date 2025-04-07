@@ -1,0 +1,30 @@
+Thread disadvantages
+* single thread fails kills process
+* shared state (race conditions)
+
+Lock: pthread_mutex_t mtx
+* lock, unlock
+* init, destroy
+
+Lock before accessing shared memory, unlock after accessing
+* Only 1 thread can lock at once
+* Lock reader and writer
+
+Mutex: MUTual EXclusion
+* OS implemented
+* Locks are queues of thread ids
+
+POSIX (Portable Operating System Interface)
+* OS interface based on UNIX
+
+1 thread locks, other threads sleep, wake up when mutex is unlocked
+
+Locking in practice
+* lock and unlock in pairs
+* 1 mutex per protected resource
+* lock is blocking (use short critical sections)
+
+Locking granularity
+* coarse: lock entire array
+* fine: lock individual values
+
