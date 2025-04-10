@@ -28,3 +28,15 @@ Locking granularity
 * coarse: lock entire array
 * fine: lock individual values
 
+Producer consumer problem
+* thread 1 producer, puts into shared buffer
+* thread 2 consumer, takes value out of shared buffer
+* sync: consumer waits if buffer empty, producer waits if buffer full
+* producer: repeatedly: lock, if no task (global), add task, unlock
+* consumer: repeatedly: lock, if test (global), extract task, unlock
+* treats buffer as size one, producer can only add 1, consumer can only take 1
+
+POSIX condition variable
+* sync primitive (along with mutex)
+* init, destroy; wait, signal, broadcast
+
