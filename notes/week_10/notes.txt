@@ -1,0 +1,25 @@
+Deadlock: no one can make progress, waiting for each other
+* thread0 has mutexA locked, trying to lock mutexB
+* thread1 has mutexB locked, trying to lock mutexA
+
+Read-write lock:
+* writer starvation: too many readers, writer doesn't get chance to write
+	* solution: write locks take precedence over read locks, but this can cause reader starvation
+* reader starvation: too many writers, readers don't get chance to read
+
+Read-write lock implemented through primitives mutex and condition
+
+rwlock lock:
+* lock mutex
+* inc waiting counter
+* if predicate not true: wait for cond
+* dec waiting counter
+* inc active counter
+* unlock mutex
+
+rwlock unlock:
+* lock mutex
+* dec active counter
+* if writer waiting: signal write cond
+* if this is a write unlock: broadcast read cond
+* unlock mutex
