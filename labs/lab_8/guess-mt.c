@@ -162,6 +162,28 @@ void * thread_c(void * arg_in)
     //      wait for a guess from thread_p 
     //      call gmn_check() 
     //      send the result and, if the guess is correct, the final message to thread_p
+    pthread_mutex_lock(&arg->mutex);
+    arg->max = gmn_get_max();
+    arg->status = S_MAX;
+    pthread_cond_signal(&arg->cond_result);
+    pthread_mutex_unlock(&arg->mutex);
+
+    int cont = 1;
+    while (cont) {
+        pthread_mutex_lock(&arg->mutex);
+        while (arg->status != S_GUESS) {
+            pthread_cond_wait(&arg->cond_guess, &arg->mutex);
+        }
+
+        arg->result = gmn_check(&gmn, arg->guess);
+        arg->status = S_RESULT;
+        pthread_cond_signal(&arg->cond_result);
+        if (arg->result == 0) {
+            snprintf(arg->message, sizeof(arg->message), "%s", gmn.message);
+            cont = 0;
+        }
+        pthread_mutex_unlock(&arg->mutex);
+    }
 
     return NULL;
 }
@@ -182,6 +204,12 @@ void * thread_p(void *arg_in)
 
     // TODO
     //      get max from thread_c
+    pthread_mutex_lock(&arg->mutex);
+    while (arg->status != S_MAX) {
+        pthread_cond_wait(&arg->cond_result, &arg->mutex);
+    }
+    max = arg->max;
+    pthread_mutex_unlock(&arg->mutex);
 
     do { 
         guess = (min + max)/2;
@@ -190,6 +218,18 @@ void * thread_p(void *arg_in)
         // TODO
         //     send guess to thread_c
         //     wait for the result from thread_c (copy arg->result to result!)
+        pthread_mutex_lock(&arg->mutex);
+        arg->guess = guess;
+        arg->status = S_GUESS;
+        pthread_cond_signal(&arg->cond_guess);
+        pthread_mutex_unlock(&arg->mutex);
+
+        pthread_mutex_lock(&arg->mutex);
+        while (arg->status != S_RESULT) {
+            pthread_cond_wait(&arg->cond_result, &arg->mutex);
+        }
+        result = arg->result;
+        pthread_mutex_unlock(&arg->mutex);
 
         if (result > 0)
             min = guess + 1;
@@ -229,12 +269,17 @@ int main(int argc, char *argv[])
     }
 
     thread_arg_t arg;
+    arg.status = S_INIT;
 
     arg.seed = seed;
 
     // TODO
     // Create the two threads and wait for them to finish
-
+    pthread_t tc, tp;
+    pthread_create(&tc, NULL, thread_c, &arg);
+    pthread_create(&tp, NULL, thread_p, &arg);
+    pthread_join(tc, NULL);
+    pthread_join(tp, NULL);
     
     return 0;
 }
