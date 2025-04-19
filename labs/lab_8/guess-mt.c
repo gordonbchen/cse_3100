@@ -270,6 +270,9 @@ int main(int argc, char *argv[])
 
     thread_arg_t arg;
     arg.status = S_INIT;
+    pthread_mutex_init(&arg.mutex, NULL);
+    pthread_cond_init(&arg.cond_guess, NULL);
+    pthread_cond_init(&arg.cond_result, NULL);
 
     arg.seed = seed;
 
@@ -280,6 +283,10 @@ int main(int argc, char *argv[])
     pthread_create(&tp, NULL, thread_p, &arg);
     pthread_join(tc, NULL);
     pthread_join(tp, NULL);
+
+    pthread_mutex_destroy(&arg.mutex);
+    pthread_cond_destroy(&arg.cond_guess);
+    pthread_cond_destroy(&arg.cond_result);
     
     return 0;
 }
