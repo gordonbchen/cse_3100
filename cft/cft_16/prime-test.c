@@ -61,8 +61,7 @@ typedef struct {
 } thread_arg_t;
 
 //consumer thread tests if the data can be divided by the prime number owned by the thread
-void * consumer(void *t) 
-{
+void * consumer(void *t) {
     thread_arg_t * arg = t;
 
     // get parameters
@@ -70,93 +69,89 @@ void * consumer(void *t)
     int p = arg->p;
     data_t *pdata = arg->pdata;
 
-    int done = 0;
-
-    while (! done) 
-    {
+    while (1) {
         //Fill in code below on mutex and condition variable
-
-
-
-
-
+        pthread_mutex_lock(&pdata->mutex);
+        while (!pdata->ready) {
+            pthread_cond_wait(&pdata->ready_cond, &arg->pdata->mutex);
+        }
 
         //if the data produced is negative, we set done to 1
         if (pdata->data < 0) {
-            done = 1;
+            pthread_mutex_unlock(&pdata->mutex);
+            break;
         }
-        else 
-        { 
-            if ((pdata->data % p) == 0) 
-            {
-                //fill in the code below
-
-
-
-            }
-            else 
-            {
-                //fill in the code below
-
-
-
-
+        
+        if ((pdata->data % p) == 0) {
+            //fill in the code below
+            pdata->ready = 0;
+            pthread_cond_signal(&pdata->processed_cond);
+        }
+        else {
+            //fill in the code below
+            SET_BIT(pdata->checked, arg->id);
+            if (pdata->checked == FLAG) {
+                pdata->ready = 0;
+                pthread_cond_signal(&pdata->processed_cond);
             }
         }
 		//fill in the code below
+        pthread_mutex_unlock(&pdata->mutex);
     }
     return NULL;
 }
 
 //read an integer. if it is not in the range it will be set to -1
-int read_integer()
-{
-        printf("Enter an integer: (100 to 10000)\n");
-        int v;
-        
-        if (scanf("%d", &v) != 1) {
-            v = -1;
-        }   
-        
-        //make sure v is in the range
-        if(v < 100 || v >10000) v = -1;
-
+int read_integer() {
+    printf("Enter an integer: (100 to 10000)\n");
+    int v;
+    
+    if (scanf("%d", &v) != 1) {
+        v = -1;
+    }   
+    
+    //make sure v is in the range
+    if(v < 100 || v >10000) v = -1;
     return v;
 }
 
-void *producer(void *t) 
-{
+void *producer(void *t) {
     thread_arg_t * arg = t;
 
     // get parameters
     data_t *pdata = arg->pdata;
 
-    int done = 0;
-    while (! done) 
-    {
-        //Fill in code below on mutex and condition variable
-
-
-
-
+    while (1) {
         //read an integer to v
         int v = read_integer();
-        //fill in the code below to produce data and wake up consumers
+
+        pthread_mutex_lock(&pdata->mutex);
+        pdata->data = v;
+        pdata->ready = 1;
+        pdata->checked = 0;
+        pthread_cond_broadcast(&pdata->ready_cond);
         
-        
+        if (v < 0) {
+            pthread_mutex_unlock(&pdata->mutex);
+            break;
+        }
 
-
-
-        done = (v < 0);
+        while (pdata->ready) {
+            pthread_cond_wait(&pdata->processed_cond, &pdata->mutex);
+        }
+        if (pdata->checked == FLAG) {
+            printf("%d is a prime.\n", v);
+        }
+        else {
+            printf("%d is not a prime.\n", v);
+        }
+        pthread_mutex_unlock(&pdata->mutex);
     }
-
     return NULL;
 }
 
 //Do not change the main() function
-int main (int argc, char *argv[])
-{
-
+int main (int argc, char *argv[]) {
     //There are 25 pirmes below 100
     static int primes[] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97};
     int i, rv;
