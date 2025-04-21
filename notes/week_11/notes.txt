@@ -1,0 +1,47 @@
+Inter-process communication (between processes)
+* pipes
+* shared memory (files)
+
+Processes on different nodes (different computers)
+* internet (networking)
+
+Network protocol layers
+* application: supports network applications: ftp, smtp, http
+* transport: process-process data transfer: tcp, udp
+* network: routing datagrams from source to dest: IP, routing protocols
+* link: data transfer b/t neighboring networks: ethernet, wifi (802.11), PPP
+* physical: bits on the wire
+
+IP (Internet Protocol): addressing and routing
+* data divided into packets
+* datagram: bytes
+* source, destination addresses (IP address)
+* IPv4 address: 32-bit (4 bytes), 172.16.254.1
+* data is max 65,515 bytes
+
+Multiple packets
+* can't guarentee order of packets arriving
+* IP handles sending 1 packet
+
+TCP (Transmission Control Protocol)
+* handles multi-packet case (order, dropped packets)
+* reliable communication with TCP over IP
+
+Sockets
+* socket programming is an OS abstraction for TCP/IP
+* resource, must be opened and closed
+* similar to file descriptors, use io functions (everything is a file!)
+* bidirectional
+* stream sockets for TCP, datagram sockets for UDP
+* sockets associated with a port
+
+Ports
+* doors for communication
+* identify services for TCP and UDP
+* port determines what process the information is delivered to
+* sockets are abstractions over ports
+
+Server-client
+* Server: create socket, bind to IP address and port number, start to listen
+* Client: create socket, bind...
+* Client send, server recv, server send, client recv

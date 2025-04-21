@@ -1,0 +1,31 @@
+Socket: int socket(int domain, int type, int protocol)
+* domain: AF_LOCAL (same host), AF_INET (IPv4), AF_INET6 (IPv6)
+* type: SOCK_STREAM (TCP), SOCK_DGRAM (UDP)
+* protocol: IP, 0
+* return: file descriptor or -1 if error
+* use close() to free resource
+
+Bind: bind socket to address and port number
+* int bind(int sockfd, const struct sockaddr* addr, socklen_t addrlen);
+
+Listen: server socket starts listening
+* int listen(int sockfd, int backlog)
+* backlog: max length for pending connection queue
+
+Accept: block until connection request comes from client
+* int accept(int sockfd, struct sockaddr* addr, socklen_t* addrlen);
+* builds connection: 3-way handshake
+* returns new socket fd, used for client server communication
+* old sockfd is only for establishing a connection
+
+Connect: int connect(int socket, const struct sockaddr* address, socklen_t address_len);
+* connects to ip address and port number, does 3-way handshake
+
+getaddrinfo func to get linked list of results specifying IP address for domain name
+
+Send: ssize_t send(int sfd, const void* vuf, size_t len, int flags);
+* returns # bytes sent (not necessarily successfully recieved), or -1 on error
+* sfd: socket fd for client server communication
+* buf: pointer to data of size len bytes
+
+recv: ssize_t recv(int sfd, void* buf, size_t len, int flags);
