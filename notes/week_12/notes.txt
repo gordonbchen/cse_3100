@@ -29,3 +29,47 @@ Send: ssize_t send(int sfd, const void* vuf, size_t len, int flags);
 * buf: pointer to data of size len bytes
 
 recv: ssize_t recv(int sfd, void* buf, size_t len, int flags);
+
+Layers: application, transport, network, link, physical
+Protocols: communication between parties (ex TCP and IP)
+TCP connection is between applications
+
+Applications see byte streams in and out of sockets
+* plain text: XML or JSON
+* raw data: problems endianness and padding
+
+Send 128
+* plain text: ascii chars w/ delimiter, '1', '2', '8', '\n'
+* raw data: 4 bytes (int), 0x00, 0x00, 0x00, 0x80 (or 0x80, 0x00, 0x00, 0x00?)
+
+Byte ambiguity: 00000000 00000000 10000000
+* 1st byte is most significant: 128
+* 1st byte is least significant: 2^23
+
+Endianness: byte order
+* big-endian: most significant at smallest memory address (1st byte most significant)
+* little-endian: 1st byte least significant
+* both parties have to agree
+* little endian is more common
+
+Host byte order is platform dependent, network byte order is always big endian
+* uint32_t htonl(uint32_t hostlong) host to network order
+* uint32_t ntohl(uint32_t netlong) network to host order
+
+ASCII (1 byte per char) vs Unicode (much more expressive)
+
+Paddding / alignment problem
+* client sends data (1234, "Bill Baker", 500)
+* struct to be filled by server (id (int), name (char[]), balance (int))
+* user explicit padding or reorder fields
+
+XML: <id><12324></id>, extra tags are ignored
+JSON: {'id': 1234}, ignores excess keys
+* JSON is more efficient, fewer chars
+
+Trivial File Transfer Protocol (TFTP)
+* LS: list files on server side
+* GET fn: download file fn from server
+* EXIT: end session
+* commands are ASCII strings ending with delimiter ("\n")
+
