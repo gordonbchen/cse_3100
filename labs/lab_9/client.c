@@ -130,6 +130,30 @@ int main(int argc, char *argv[])
      *      adjust min or max if necessary
      *  print the final message, which may or may not be received with "0\n"
      *  */
+    recv_lines(sockfd, buf, LINE_SIZE);
+    get_number(buf, &max);
+    printf("%d\n", max);
+    while (1) {
+        guess = (min + max) / 2;
+        send_int(sockfd, guess);
+        printf("My guess: %d\n", guess);
+
+        recv_lines(sockfd, buf, LINE_SIZE);
+        get_number(buf, &result);
+        printf("%d\n", result);
+
+        if (result == -1) {
+            max = guess - 1;
+        }
+        else if (result == 1) {
+            min = guess + 1;
+        }
+        else {
+            recv_lines(sockfd, buf, LINE_SIZE);
+            printf("%s", buf);
+            break;
+        }
+    }
 
     close(sockfd);
     return 0;

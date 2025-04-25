@@ -21,6 +21,10 @@
 
 #define BACKLOG 10	 // how many pending connections queue will hold
 
+// S tells C largest val. C tells S guess. S tells C result.
+// If guess correct: S also sends final message, C prints final message, exit.
+
+
 // get sockaddr, IPv4 or IPv6:
 void *get_in_addr(struct sockaddr *sa)
 {
@@ -184,7 +188,28 @@ void * thread_main(void * arg_in)
     //      send the result and, if the guess is correct, send the final message
     //  clean up: close FD and free memory. 
     //  Do clean up on error. See the demo code.
+    char msg[MSG_BUF_SIZE];
+    snprintf(msg, MSG_BUF_SIZE, "%d\n", gmn_get_max());
+    send_str(sockfd, msg);
 
+    int guess;
+    int result;
+    int cont = 1;
+    while (cont) {
+        recv_lines(sockfd, msg, MSG_BUF_SIZE);
+        guess = atoi(msg);
+        result = gmn_check(&gmn, guess);
+
+        snprintf(msg, MSG_BUF_SIZE, "%d\n", result);
+        send_str(sockfd, msg);
+        if (result == 0) {
+            snprintf(msg, MSG_BUF_SIZE, "%s", gmn_get_message(&gmn));
+            send_str(sockfd, msg);
+            cont = 0;
+        }
+    }
+
+    close(sockfd);
     return NULL;
 }
 
