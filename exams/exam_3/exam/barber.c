@@ -35,11 +35,14 @@ void *barber(void *arg) {
     // TODO
     // Identify critical sections and add mutex locks and unlocks
     // Indentify positions add wait and signalling for threads
+    pthread_mutex_lock(&mutex);
     while (waiting == 0 && !barber_done) {
       current_customer = 0;
       print_status();
+      pthread_cond_wait(&barber_cond, &mutex);
     }
     if (barber_done) {
+      pthread_mutex_unlock(&mutex);
       break;
     }
 
@@ -53,13 +56,19 @@ void *barber(void *arg) {
     printf("Barber is cutting hair of customer %d, haircut %d\n",
            current_customer, total_haircuts + 1);
     print_status();
+    pthread_cond_signal(&customer_cond);
+    pthread_mutex_unlock(&mutex);
+
     sleep(3);// time to simulate a haircut
     printf("Barber done with customer %d\n", current_customer);
+
+    pthread_mutex_lock(&mutex);
     total_haircuts++;
     if (total_haircuts >= MAX_HAIRCUTS) {
       barber_done = 1;
       printf("Barber is done for today\n");
     }
+    pthread_mutex_unlock(&mutex);
   }
   return NULL;
 }
@@ -69,26 +78,31 @@ void *customer(void *arg) {
   // TODO
   // Identify critical sections and add mutex locks and unlocks
   // Indentify positions add wait and signalling for threads
-
+  pthread_mutex_lock(&mutex);
   if (!barber_done && waiting + total_haircuts < MAX_HAIRCUTS - 1) {
     for (int i = 0; i < NUM_CHAIRS; i++) {
       if (chairs[i] == 0) {
         chairs[i] = id;
         waiting++;
         print_status();
+        pthread_cond_signal(&barber_cond);
         while (chairs[0] != id && !barber_done) {
-          //checking if it is customer's turn
+          // checking if it is customer's turn
+          pthread_cond_wait(&customer_cond, &mutex);
         }
         if (chairs[0] == id) {
+          pthread_mutex_unlock(&mutex);
           return NULL;
         }
       }
     }
     printf("Customer %ld leaves because no chairs left to wait\n", id);
-  } else {
+  }
+  else {
     printf("Customer %ld leaves because no more haircuts today \n", id);
   }
 
+  pthread_mutex_unlock(&mutex);
   return NULL;
 }
 

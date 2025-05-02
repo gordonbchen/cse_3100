@@ -91,18 +91,32 @@ void next_generation() {
 
 void *game_thread(void *threadarg) {
   //Fill code here - assign these variables
-  struct thread_data *my_data = 
-  int id = 
-  int num_generations = 
-  pthread_barrier_t *p_barrier = 
+  struct thread_data *my_data = threadarg;
+  int id = my_data->id;
+  int num_generations = my_data->num_generations;
+  pthread_barrier_t *p_barrier = my_data->p_barrier;
   int B[M][N];
   int i, j, k;
 
   for (k = 0; k < num_generations; k++) {
     // TODO
     // fill in code below
+    for (i = id; i < M; i += 2) {
+      for (j = 0; j < N; ++j) {
+        B[i][j] = next_state(i, j);
+      }
+    }
+    pthread_barrier_wait(p_barrier);
+
+    for (i = id; i < M; i += 2) {
+      for (j = 0; j < N; ++j) {
+        A[i][j] = B[i][j];
+      }
+    }
+    pthread_barrier_wait(p_barrier);
   }
   //fill code here
+  pthread_exit(NULL);
 }
 
 int main(int argc, char *argv[]) {
