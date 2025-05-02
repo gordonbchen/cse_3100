@@ -129,7 +129,7 @@ void * thread_player(void *arg_in)
         //  get the result from referee and save it into outcome
         pthread_mutex_lock(&choice->mutex);
         choice->value = r;
-        choice->status = 1;
+        choice->status = S_READY;
         pthread_cond_signal(&choice->cond);
         pthread_mutex_unlock(&choice->mutex);
 
@@ -186,18 +186,20 @@ void * thread_referee(void *arg_in)
         // The big challenge is synchronization.
 
         int choice1, choice2, outcome;
-
         pthread_mutex_lock(&p1->mutex);
-        pthread_mutex_lock(&p2->mutex);
-        while ((p1->status == 0) || (p2->status == 0)) {
+        while (p1->status != S_READY) {
             pthread_cond_wait(&p1->cond, &p1->mutex);
-            pthread_cond_wait(&p2->cond, &p2->mutex);
         }
         choice1 = p1->value;
-        choice2 = p2->value;
-        p1->status = 0;
-        p2->status = 0;
+        p1->status = S_INIT;
         pthread_mutex_unlock(&p1->mutex);
+
+        pthread_mutex_lock(&p2->mutex);
+        while (p2->status != S_READY) {
+            pthread_cond_wait(&p2->cond, &p2->mutex);
+        }
+        choice2 = p2->value;
+        p2->status = S_INIT;
         pthread_mutex_unlock(&p2->mutex);
 
         outcome = compare_choices(choice1, choice2);
